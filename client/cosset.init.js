@@ -12,8 +12,6 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
-async function getBackupData(share) {}
-
 (async function () {
   console.log('Create new wallet');
   let res;
