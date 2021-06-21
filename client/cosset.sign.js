@@ -29,6 +29,7 @@ async function sign(context, operation) {
   }
 
   const input = Buffer.from(operation.message, 'base64');
+  console.log("message", operation.message)
   const output = context.step(input);
 
   console.log(' - Sending MPC data to server');
@@ -148,7 +149,7 @@ async function sign(context, operation) {
     `\n*️⃣  Broadcasting: https://ropsten.etherscan.io/tx/0x${decodedTx.hash}`
   );
   const broadcastResponse = await fetch(
-    `${COSSET_CRYPTO_URL}/ethereum/broadcast`,
+    `${COSSET_API_URL}/ethereum/broadcast`,
     {
       method: 'POST',
       headers,
