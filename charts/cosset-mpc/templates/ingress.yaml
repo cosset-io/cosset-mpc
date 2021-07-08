@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.mpc.name }}
+  labels:
+    name: {{ .Values.mpc.name }}
+  {{- with .Values.mpc.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.mpc.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.mpc.ingress.host | quote }}
+      secretName: {{ .Values.mpc.ingress.tls.secret }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.mpc.ingress.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.mpc.name }}
+                port:
+                  number: 80

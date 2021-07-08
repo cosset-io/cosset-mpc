@@ -1,0 +1,25 @@
+imagePullSecret: regcred
+mpc:
+  image:
+    repository: ghcr.io/cosset-io/cosset-mpc/mpc
+    pullPolicy: Always
+    tag: latest
+  name: cosset-mpc
+  enabled: true
+  replicas: 1
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    host: mpc.beta.cosset.cf
+    tls:
+      enabled: true
+      secret: mpc.beta.cosset.cf
+  env:
+    - name: DATABASE_URL
+      value: postgresql://mpc:password@mpc-db-postgresql/mpc
+    - name: ENCRYPTION_PUBLIC_KEY
+      valueFrom:
+        secretKeyRef:
+          name: cosset-mpc-keys
+          key: public.pem

@@ -32,3 +32,16 @@ services:
     environment:
       COSSET_API_URL: https://wallet.cosset.cf
       COSSET_CRYPTO_URL: https://crypto.cosset.cf
+
+  client-init-ed25519:
+    image: mpc
+    command: node ./client/cosset.init.ed25519.js
+    environment:
+      COSSET_API_URL: https://wallet.cosset.cf
+
+  client-sign-algo:
+    image: mpc
+    command: node ./client/cosset.sign.algo.js
+    environment:
+      COSSET_API_URL: https://wallet.cosset.cf
+      COSSET_CRYPTO_URL: https://crypto.cosset.cf

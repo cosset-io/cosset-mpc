@@ -1,0 +1,8 @@
+postgresqlUsername: mpc
+postgresqlDatabase: mpc
+postgresqlPassword: password
+persistence:
+  enabled: true
+primary:
+  service:
+    type: ClusterIP
