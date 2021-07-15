@@ -72,7 +72,7 @@ async function sign(context, operation, account) {
   console.log(' - Wallet ID:', account.address.wallet.id);
 
   console.log('\n📄 Create new send');
-  const { raw, message } = await (
+  const res = await (
     await fetch(`${COSSET_API_URL}/accounts/${accountID}/transactions`, {
       method: 'POST',
       headers,
@@ -83,6 +83,11 @@ async function sign(context, operation, account) {
       }),
     })
   ).json();
+
+  const {
+    raw,
+    messages: [message],
+  } = res;
   console.log(' - Unsigned tx:', raw);
   console.log(' - Data to sign:', message);
 
@@ -133,7 +138,7 @@ async function sign(context, operation, account) {
       headers,
       body: JSON.stringify({
         raw,
-        signature: signedOperation.signature,
+        signatures: [signedOperation.signature],
         publicKey: account.address.wallet.publicKey,
       }),
     })
