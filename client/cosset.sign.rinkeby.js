@@ -134,7 +134,7 @@ async function sign(context, operation, account) {
       body: JSON.stringify({
         raw,
         signature: signedOperation.signature,
-        publicKey: account.address.wallet.publicKey,
+        wallet: account.address.wallet,
       }),
     })
   ).json();

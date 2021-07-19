@@ -134,22 +134,22 @@ async function sign(context, operation, account) {
       body: JSON.stringify({
         raw,
         signatures: [signedOperation.signature],
-        publicKey: account.address.wallet.publicKey,
+        wallet: account.address.wallet,
       }),
     })
   ).json();
   console.log('\n📝 Signed transaction:', signedTx.raw);
 
-  // const decodedTx = await (
-  //   await fetch(`${COSSET_CRYPTO_URL}/algorand/decode`, {
-  //     method: 'POST',
-  //     headers,
-  //     body: JSON.stringify({
-  //       raw: signedTx.raw,
-  //     }),
-  //   })
-  // ).json();
-  // console.log(decodedTx);
+  const decodedTx = await (
+    await fetch(`${COSSET_CRYPTO_URL}/algorand/decode`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        raw: signedTx.raw,
+      }),
+    })
+  ).json();
+  console.log(decodedTx);
 
   console.log(
     `\n*️⃣  Broadcasting: https://testnet.algoexplorer.io/tx/${decodedTx.hash}`,
