@@ -47,10 +47,61 @@ async function sign(context, operation, account) {
   return sign(context, await res.json(), account);
 }
 
-async function processTx(account, tx) {
-  console.log('\n📄 Process tx');
+(async function () {
+  const account = await (
+    await fetch(`${COSSET_API_URL}/accounts/${accountID}`, {
+      method: 'GET',
+      headers,
+    })
+  ).json();
 
-  const { raw, messages } = tx;
+  const total = account.balances.reduce(
+    (latest, current) =>
+      current.block.height > latest.block.height ? current : latest,
+    { block: { height: 0 } },
+  ).total;
+
+  console.log('\n💰 Your account');
+  console.log(' - Currency:', account.currency.symbol);
+  console.log(
+    ` - Total balance: ${total} (≈ ${total / 10 ** account.currency.decimals} ${
+      account.currency.symbol
+    })`,
+  );
+  console.log(' - Address:', account.address.hash);
+  console.log(' - Public key:', account.address.wallet.publicKey);
+  console.log(' - Wallet ID:', account.address.wallet.id);
+
+  const investment = await (
+    await fetch(
+      `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}`,
+      {
+        method: 'GET',
+        headers,
+      },
+    )
+  ).json();
+
+  console.log('\n Investment');
+  console.log(' - Based currency:', investment.asset.symbol);
+  console.log(' - Allowance:', investment.allowance);
+
+  console.log('\n📄 Create new withdrawal');
+
+  const { raw, messages } = await (
+    await fetch(
+      `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}/transactions/withdrawal`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          amount: '1',
+          fee: '1e16',
+        }),
+      },
+    )
+  ).json();
+
   const [message] = messages;
   console.log(' - Unsigned tx:', raw);
   console.log(' - Data to sign:', message);
@@ -136,61 +187,4 @@ async function processTx(account, tx) {
   console.log(await broadcastResponse.text());
 
   console.log('\nDone');
-}
-
-(async function () {
-  const account = await (
-    await fetch(`${COSSET_API_URL}/accounts/${accountID}`, {
-      method: 'GET',
-      headers,
-    })
-  ).json();
-
-  const total = account.balances.reduce(
-    (latest, current) =>
-      current.block.height > latest.block.height ? current : latest,
-    { block: { height: 0 } },
-  ).total;
-
-  console.log('\n💰 Your account');
-  console.log(' - Currency:', account.currency.symbol);
-  console.log(
-    ` - Total balance: ${total} (≈ ${total / 10 ** account.currency.decimals} ${
-      account.currency.symbol
-    })`,
-  );
-  console.log(' - Address:', account.address.hash);
-  console.log(' - Public key:', account.address.wallet.publicKey);
-  console.log(' - Wallet ID:', account.address.wallet.id);
-
-  const investment = await (
-    await fetch(
-      `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}`,
-      {
-        method: 'GET',
-        headers,
-      },
-    )
-  ).json();
-
-  console.log('\n Investment');
-  console.log(' - Based currency:', investment.asset.symbol);
-  console.log(' - Allowance:', investment.allowance);
-
-  const txs = await (
-    await fetch(
-      `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}/transactions/deposit`,
-      {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          amount: '1',
-          fee: '1e15',
-        }),
-      },
-    )
-  ).json();
-
-  await processTx(account, txs[0]);
-  await processTx(account, txs[1]);
 })().catch(console.error);
