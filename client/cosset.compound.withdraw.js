@@ -86,38 +86,21 @@ async function sign(context, operation, account) {
   console.log(' - Based currency:', investment.asset.symbol);
   console.log(' - Allowance:', investment.allowance);
 
-  console.log('\n📄 Create new approval');
+  console.log('\n📄 Create new withdrawal');
 
-  const { raw, messages } =
-    BigInt(investment.allowance) === -1
-      ? //deposit
-        await (
-          await fetch(
-            `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}/transactions/deposit`,
-            {
-              method: 'POST',
-              headers,
-              body: JSON.stringify({
-                amount: '1',
-                fee: '1e16',
-              }),
-            },
-          )
-        ).json()
-      : // approve
-        await (
-          await fetch(
-            `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}/transactions/approve`,
-            {
-              method: 'POST',
-              headers,
-              body: JSON.stringify({
-                amount: null,
-                fee: '1000000000000',
-              }),
-            },
-          )
-        ).json();
+  const { raw, messages } = await (
+    await fetch(
+      `${COSSET_API_URL}/accounts/${accountID}/investments/${investmentID}/transactions/withdrawal`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          amount: '1',
+          fee: '1e16',
+        }),
+      },
+    )
+  ).json();
 
   const [message] = messages;
   console.log(' - Unsigned tx:', raw);
