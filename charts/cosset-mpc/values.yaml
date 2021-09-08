@@ -1,7 +1,7 @@
 imagePullSecret: regcred
 mpc:
   image:
-    repository: ghcr.io/cosset-io/cosset-mpc/mpc
+    repository: ghcr.io/tomiwallet/cosset-mpc/mpc
     pullPolicy: Always
     tag: latest
   name: cosset-mpc
