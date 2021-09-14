@@ -6,7 +6,7 @@
   "author": "donguyenkha@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "crypto-mpc": "^0.0.3",
+    "crypto-mpc": "^0.0.4",
     "elliptic": "^6.5.4",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
