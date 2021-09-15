@@ -11,10 +11,10 @@ mpc:
     annotations:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: letsencrypt-prod
-    host: mpc.beta.stag.tomiwallet.com
+    host: mpc.stag.tomiwallet.com
     tls:
       enabled: true
-      secret: mpc.beta.stag.tomiwallet.com
+      secret: mpc.stag.tomiwallet.com
   env:
     - name: DATABASE_URL
       value: postgresql://mpc:password@mpc-db-postgresql/mpc
