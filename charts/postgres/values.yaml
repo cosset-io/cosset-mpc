@@ -3,6 +3,7 @@ postgresqlDatabase: mpc
 postgresqlPassword: password
 persistence:
   enabled: true
+  size: 100Gi
 primary:
   service:
     type: ClusterIP
