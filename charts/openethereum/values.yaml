@@ -1,4 +1,0 @@
-image:
-  args: ["--chain", "rinkeby", "--warp-barrier", "8865000"]
-persistence:
-  enabled: true
