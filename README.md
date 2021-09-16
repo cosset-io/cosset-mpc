@@ -2,7 +2,6 @@
 
 ```shell
 docker-compose build
-docler-compose up -d db
-docler-compose up -d mpc
-docker-compose up client
+docker-compose up -d db
+docker-compose up -d mpc
 ```

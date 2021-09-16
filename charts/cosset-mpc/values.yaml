@@ -1,25 +1,25 @@
 imagePullSecret: regcred
 mpc:
   image:
-    repository: ghcr.io/tomiwallet/cosset-mpc/mpc
+    repository: ghcr.io/tomiwallet/tomi-mpc/server
     pullPolicy: Always
     tag: latest
-  name: cosset-mpc
+  name: tomi-mpc
   enabled: true
   replicas: 1
   ingress:
     annotations:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: letsencrypt-prod
-    host: mpc.beta.cosset.cf
+    host: mpc.stag.tomiwallet.com
     tls:
       enabled: true
-      secret: mpc.beta.cosset.cf
+      secret: mpc.stag.tomiwallet.com
   env:
     - name: DATABASE_URL
-      value: postgresql://mpc:password@mpc-db-postgresql/mpc
+      value: postgresql://mpc:password@mpc-db-postgresql/server
     - name: ENCRYPTION_PUBLIC_KEY
       valueFrom:
         secretKeyRef:
-          name: cosset-mpc-keys
+          name: tomi-mpc-keys
           key: public.pem
