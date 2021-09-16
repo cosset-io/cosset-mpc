@@ -1,7 +1,7 @@
 imagePullSecret: regcred
 mpc:
   image:
-    repository: ghcr.io/tomiwallet/tomi-mpc/mpc
+    repository: ghcr.io/tomiwallet/tomi-mpc/server
     pullPolicy: Always
     tag: latest
   name: tomi-mpc
@@ -17,7 +17,7 @@ mpc:
       secret: mpc.stag.tomiwallet.com
   env:
     - name: DATABASE_URL
-      value: postgresql://mpc:password@mpc-db-postgresql/mpc
+      value: postgresql://mpc:password@mpc-db-postgresql/server
     - name: ENCRYPTION_PUBLIC_KEY
       valueFrom:
         secretKeyRef:
