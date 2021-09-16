@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.server.name }}
+  labels:
+    name: {{ .Values.server.name }}
+spec:
+  replicas: {{ .Values.server.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.server.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.server.name }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+      containers:
+        - name: mpc-server
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.server.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.server.env | nindent 12 }}
+
